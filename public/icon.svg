@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Pink rounded background -->
+  <rect width="512" height="512" rx="115" fill="#db2777"/>
+  <!-- Flower petals -->
+  <circle cx="256" cy="175" r="65" fill="#fce7f3" opacity="0.92"/>
+  <circle cx="337" cy="221" r="65" fill="#fce7f3" opacity="0.92"/>
+  <circle cx="337" cy="315" r="65" fill="#fce7f3" opacity="0.92"/>
+  <circle cx="256" cy="360" r="65" fill="#fce7f3" opacity="0.92"/>
+  <circle cx="175" cy="315" r="65" fill="#fce7f3" opacity="0.92"/>
+  <circle cx="175" cy="221" r="65" fill="#fce7f3" opacity="0.92"/>
+  <!-- Centre -->
+  <circle cx="256" cy="268" r="55" fill="#f9a8d4"/>
+</svg>
