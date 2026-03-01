@@ -31,7 +31,7 @@ function AppContent() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-app-bg">
       <NavBar activeTab={activeTab} onTabChange={handleTabChange} />
       <Layout>
         {activeTab === 'dashboard' && <Dashboard onQuickLog={handleQuickLog} />}

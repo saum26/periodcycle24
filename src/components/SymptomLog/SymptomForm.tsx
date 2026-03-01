@@ -36,7 +36,7 @@ export function SymptomForm({ initial, defaultDate, onSave, onClose }: SymptomFo
               value={date}
               onChange={(e) => setDate(e.target.value)}
               required
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-pink-400"
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
             />
           </div>
 
@@ -66,7 +66,7 @@ export function SymptomForm({ initial, defaultDate, onSave, onClose }: SymptomFo
               onChange={(e) => setNotes(e.target.value)}
               rows={3}
               placeholder="Any other notes..."
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-pink-400 resize-none"
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary resize-none"
             />
           </div>
 
@@ -80,7 +80,7 @@ export function SymptomForm({ initial, defaultDate, onSave, onClose }: SymptomFo
             </button>
             <button
               type="submit"
-              className="flex-1 py-2 bg-pink-500 rounded-lg text-sm font-medium text-white hover:bg-pink-600"
+              className="flex-1 py-2 bg-primary rounded-lg text-sm font-medium text-white hover:bg-primary-dark"
             >
               Save
             </button>
@@ -110,7 +110,7 @@ function OptionGroup({ label, value, onChange, options }: OptionGroupProps) {
             onClick={() => onChange(value === opt ? undefined : opt)}
             className={`px-3 py-1 rounded-full text-sm capitalize transition-colors ${
               value === opt
-                ? 'bg-pink-500 text-white'
+                ? 'bg-primary text-white'
                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
             }`}
           >

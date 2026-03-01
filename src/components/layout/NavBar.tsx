@@ -14,7 +14,7 @@ const tabs: { id: Tab; label: string; icon: string }[] = [
 
 export function NavBar({ activeTab, onTabChange }: NavBarProps) {
   return (
-    <nav className="bg-pink-600 text-white shadow-md">
+    <nav className="bg-primary text-white shadow-md">
       {/* App title */}
       <div className="text-center pt-3 pb-1">
         <h1 className="text-base font-bold tracking-tight">🌸 Period Tracker</h1>
@@ -27,8 +27,8 @@ export function NavBar({ activeTab, onTabChange }: NavBarProps) {
             onClick={() => onTabChange(tab.id)}
             className={`flex-1 flex flex-col items-center py-2 text-xs font-medium transition-colors ${
               activeTab === tab.id
-                ? 'bg-white text-pink-600'
-                : 'hover:bg-pink-500'
+                ? 'bg-white text-accent'
+                : 'hover:bg-primary-dark'
             }`}
           >
             <span className="text-lg leading-none">{tab.icon}</span>

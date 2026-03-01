@@ -10,7 +10,7 @@ export function Dashboard({ onQuickLog }: DashboardProps) {
   const { cycles } = useAppContext();
   const predictions = useCyclePredictions(cycles);
 
-  const statusBg = predictions.isOnPeriod ? 'bg-red-500' : 'bg-pink-500';
+  const statusBg = predictions.isOnPeriod ? 'bg-accent' : 'bg-primary';
 
   return (
     <div className="space-y-4">
@@ -68,7 +68,7 @@ export function Dashboard({ onQuickLog }: DashboardProps) {
       {/* Quick log */}
       <button
         onClick={onQuickLog}
-        className="w-full py-3 bg-pink-100 hover:bg-pink-200 text-pink-700 font-medium rounded-xl transition-colors"
+        className="w-full py-3 bg-secondary hover:bg-secondary-dark text-accent font-medium rounded-xl transition-colors"
       >
         + Log Today's Symptoms
       </button>

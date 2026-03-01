@@ -94,7 +94,7 @@ export function Calendar({ onDayClick }: CalendarProps) {
       {/* Legend */}
       <div className="flex flex-wrap gap-3 text-xs text-gray-600">
         <LegendItem color="bg-red-400" label="Period" />
-        <LegendItem color="bg-pink-100 border-2 border-dashed border-pink-400" label="Predicted" />
+        <LegendItem color="bg-secondary border-2 border-dashed border-primary" label="Predicted" />
         <LegendItem color="bg-green-100" label="Ovulation" />
         <LegendItem color="ring-2 ring-blue-500" label="Today" />
       </div>

@@ -37,7 +37,7 @@ export function CycleLog() {
         <h2 className="text-2xl font-bold text-gray-800">Cycles</h2>
         <button
           onClick={() => { setShowForm(true); setEditing(null); }}
-          className="px-4 py-2 bg-pink-500 text-white rounded-lg text-sm font-medium hover:bg-pink-600 transition-colors"
+          className="px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-primary-dark transition-colors"
         >
           + Log Period
         </button>

@@ -30,7 +30,7 @@ export function CycleForm({ initial, onSave, onClose }: CycleFormProps) {
               value={startDate}
               onChange={(e) => setStartDate(e.target.value)}
               required
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-pink-400"
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
             />
           </Field>
           <Field label="End Date" hint="optional">
@@ -39,7 +39,7 @@ export function CycleForm({ initial, onSave, onClose }: CycleFormProps) {
               value={endDate}
               min={startDate || undefined}
               onChange={(e) => setEndDate(e.target.value)}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-pink-400"
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
             />
           </Field>
           <div className="flex gap-3 pt-2">
@@ -52,7 +52,7 @@ export function CycleForm({ initial, onSave, onClose }: CycleFormProps) {
             </button>
             <button
               type="submit"
-              className="flex-1 py-2 bg-pink-500 rounded-lg text-sm font-medium text-white hover:bg-pink-600"
+              className="flex-1 py-2 bg-primary rounded-lg text-sm font-medium text-white hover:bg-primary-dark"
             >
               Save
             </button>

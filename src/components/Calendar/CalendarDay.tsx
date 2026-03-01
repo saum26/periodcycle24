@@ -27,8 +27,8 @@ export function CalendarDay({
     bg = 'bg-red-400';
     text = 'text-white';
   } else if (isPredictedPeriod) {
-    bg = 'bg-pink-100';
-    extraBorder = 'border-2 border-dashed border-pink-400';
+    bg = 'bg-secondary';
+    extraBorder = 'border-2 border-dashed border-primary';
   } else if (isOvulation) {
     bg = 'bg-green-100';
   }
