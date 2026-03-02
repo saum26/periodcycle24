@@ -63,9 +63,21 @@ export function SymptomLog({ initialDate }: SymptomLogProps) {
                 <div className="flex-1 min-w-0">
                   <p className="font-semibold text-gray-800">{formatDate(log.date)}</p>
                   <div className="flex flex-wrap gap-2 mt-2">
-                    {log.flow && <Badge label={`Flow: ${log.flow}`} color="red" />}
-                    {log.cramps && <Badge label={`Cramps: ${log.cramps}`} color="orange" />}
-                    {log.mood && <Badge label={`Mood: ${log.mood}`} color="purple" />}
+                    {log.flow && (
+                      <span className="bg-accent text-white text-xs px-2 py-0.5 rounded-full capitalize">
+                        Flow: {log.flow}
+                      </span>
+                    )}
+                    {(log.symptoms ?? []).slice(0, 4).map((s) => (
+                      <span key={s} className="bg-secondary/50 text-accent text-xs px-2 py-0.5 rounded-full">
+                        {s}
+                      </span>
+                    ))}
+                    {(log.symptoms ?? []).length > 4 && (
+                      <span className="bg-gray-100 text-gray-500 text-xs px-2 py-0.5 rounded-full">
+                        +{(log.symptoms ?? []).length - 4} more
+                      </span>
+                    )}
                   </div>
                   {log.notes && (
                     <p className="text-sm text-gray-500 mt-2 truncate">{log.notes}</p>
@@ -100,16 +112,5 @@ export function SymptomLog({ initialDate }: SymptomLogProps) {
         />
       )}
     </div>
-  );
-}
-
-function Badge({ label, color }: { label: string; color: 'red' | 'orange' | 'purple' }) {
-  const colors: Record<string, string> = {
-    red: 'bg-red-100 text-red-700',
-    orange: 'bg-orange-100 text-orange-700',
-    purple: 'bg-purple-100 text-purple-700',
-  };
-  return (
-    <span className={`text-xs px-2 py-0.5 rounded-full ${colors[color]}`}>{label}</span>
   );
 }

@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, KeyboardEvent } from 'react';
 import { format } from 'date-fns';
 import { DailyLog } from '../../types';
+import { SYMPTOM_CATEGORIES } from '../../constants/symptoms';
 
 interface SymptomFormProps {
   initial?: DailyLog;
@@ -13,13 +14,57 @@ export function SymptomForm({ initial, defaultDate, onSave, onClose }: SymptomFo
   const today = format(new Date(), 'yyyy-MM-dd');
   const [date, setDate] = useState(initial?.date ?? defaultDate ?? today);
   const [flow, setFlow] = useState<DailyLog['flow']>(initial?.flow);
-  const [cramps, setCramps] = useState<DailyLog['cramps']>(initial?.cramps);
-  const [mood, setMood] = useState<DailyLog['mood']>(initial?.mood);
+  const [symptoms, setSymptoms] = useState<string[]>(initial?.symptoms ?? []);
+  const [customInput, setCustomInput] = useState('');
   const [notes, setNotes] = useState(initial?.notes ?? '');
+
+  // Pre-open categories that have selected symptoms when editing
+  const [openCategories, setOpenCategories] = useState<Set<string>>(() => {
+    if (!initial?.symptoms?.length) return new Set();
+    const open = new Set<string>();
+    for (const cat of SYMPTOM_CATEGORIES) {
+      if (cat.symptoms.some((s) => initial.symptoms.includes(s))) {
+        open.add(cat.label);
+      }
+    }
+    return open;
+  });
+
+  function toggleSymptom(symptom: string) {
+    setSymptoms((prev) =>
+      prev.includes(symptom) ? prev.filter((s) => s !== symptom) : [...prev, symptom]
+    );
+  }
+
+  function toggleCategory(label: string) {
+    setOpenCategories((prev) => {
+      const next = new Set(prev);
+      if (next.has(label)) {
+        next.delete(label);
+      } else {
+        next.add(label);
+      }
+      return next;
+    });
+  }
+
+  function addCustomSymptom() {
+    const trimmed = customInput.trim();
+    if (!trimmed || symptoms.includes(trimmed)) return;
+    setSymptoms((prev) => [...prev, trimmed]);
+    setCustomInput('');
+  }
+
+  function handleCustomKeyDown(e: KeyboardEvent<HTMLInputElement>) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      addCustomSymptom();
+    }
+  }
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    onSave({ date, flow, cramps, mood, notes: notes.trim() || undefined });
+    onSave({ date, flow, symptoms, notes: notes.trim() || undefined });
   }
 
   return (
@@ -29,6 +74,7 @@ export function SymptomForm({ initial, defaultDate, onSave, onClose }: SymptomFo
           {initial ? 'Edit Log' : 'Log Symptoms'}
         </h3>
         <form onSubmit={handleSubmit} className="space-y-4">
+          {/* Date */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Date</label>
             <input
@@ -40,25 +86,116 @@ export function SymptomForm({ initial, defaultDate, onSave, onClose }: SymptomFo
             />
           </div>
 
-          <OptionGroup
-            label="Flow"
-            value={flow}
-            onChange={(v) => setFlow(v as DailyLog['flow'])}
-            options={['light', 'medium', 'heavy']}
-          />
-          <OptionGroup
-            label="Cramps"
-            value={cramps}
-            onChange={(v) => setCramps(v as DailyLog['cramps'])}
-            options={['none', 'mild', 'moderate', 'severe']}
-          />
-          <OptionGroup
-            label="Mood"
-            value={mood}
-            onChange={(v) => setMood(v as DailyLog['mood'])}
-            options={['happy', 'neutral', 'sad', 'anxious', 'irritable']}
-          />
+          {/* Flow */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Flow</label>
+            <div className="flex flex-wrap gap-2">
+              {(['light', 'medium', 'heavy'] as const).map((opt) => (
+                <button
+                  key={opt}
+                  type="button"
+                  onClick={() => setFlow(flow === opt ? undefined : opt)}
+                  className={`px-3 py-1 rounded-full text-sm capitalize transition-colors ${
+                    flow === opt
+                      ? 'bg-primary text-white'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
+                >
+                  {opt}
+                </button>
+              ))}
+            </div>
+          </div>
 
+          {/* Symptoms */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Symptoms</label>
+
+            {/* Selected symptoms summary */}
+            {symptoms.length > 0 && (
+              <div className="bg-secondary/30 rounded-lg p-3 mb-3 flex flex-wrap gap-2">
+                {symptoms.map((s) => (
+                  <button
+                    key={s}
+                    type="button"
+                    onClick={() => toggleSymptom(s)}
+                    className="bg-primary text-white text-xs px-2 py-1 rounded-full flex items-center gap-1 hover:bg-primary-dark transition-colors"
+                  >
+                    {s}
+                    <span className="text-white/70">×</span>
+                  </button>
+                ))}
+              </div>
+            )}
+
+            {/* Collapsible categories */}
+            <div className="space-y-1 border border-gray-200 rounded-lg overflow-hidden">
+              {SYMPTOM_CATEGORIES.map((cat) => {
+                const isOpen = openCategories.has(cat.label);
+                const selectedCount = cat.symptoms.filter((s) => symptoms.includes(s)).length;
+                return (
+                  <div key={cat.label}>
+                    <button
+                      type="button"
+                      onClick={() => toggleCategory(cat.label)}
+                      className="w-full flex items-center justify-between px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors border-b border-gray-100 last:border-b-0"
+                    >
+                      <span>
+                        {cat.emoji} {cat.label}
+                      </span>
+                      <span className="flex items-center gap-2">
+                        {selectedCount > 0 && (
+                          <span className="bg-primary text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                            {selectedCount}
+                          </span>
+                        )}
+                        <span className="text-gray-400 text-xs">{isOpen ? '▲' : '▼'}</span>
+                      </span>
+                    </button>
+                    {isOpen && (
+                      <div className="px-3 py-2 bg-gray-50 flex flex-wrap gap-2 border-b border-gray-100">
+                        {cat.symptoms.map((s) => (
+                          <button
+                            key={s}
+                            type="button"
+                            onClick={() => toggleSymptom(s)}
+                            className={`px-2 py-1 rounded-full text-xs transition-colors ${
+                              symptoms.includes(s)
+                                ? 'bg-primary text-white'
+                                : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-100'
+                            }`}
+                          >
+                            {s}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Custom symptom */}
+            <div className="flex gap-2 mt-2">
+              <input
+                type="text"
+                value={customInput}
+                onChange={(e) => setCustomInput(e.target.value)}
+                onKeyDown={handleCustomKeyDown}
+                placeholder="Add custom symptom..."
+                className="flex-1 border border-gray-300 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+              />
+              <button
+                type="button"
+                onClick={addCustomSymptom}
+                className="px-3 py-1.5 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-200 transition-colors"
+              >
+                Add
+              </button>
+            </div>
+          </div>
+
+          {/* Notes */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Notes</label>
             <textarea
@@ -70,6 +207,7 @@ export function SymptomForm({ initial, defaultDate, onSave, onClose }: SymptomFo
             />
           </div>
 
+          {/* Actions */}
           <div className="flex gap-3 pt-2">
             <button
               type="button"
@@ -86,37 +224,6 @@ export function SymptomForm({ initial, defaultDate, onSave, onClose }: SymptomFo
             </button>
           </div>
         </form>
-      </div>
-    </div>
-  );
-}
-
-interface OptionGroupProps {
-  label: string;
-  value: string | undefined;
-  onChange: (v: string | undefined) => void;
-  options: string[];
-}
-
-function OptionGroup({ label, value, onChange, options }: OptionGroupProps) {
-  return (
-    <div>
-      <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
-      <div className="flex flex-wrap gap-2">
-        {options.map((opt) => (
-          <button
-            key={opt}
-            type="button"
-            onClick={() => onChange(value === opt ? undefined : opt)}
-            className={`px-3 py-1 rounded-full text-sm capitalize transition-colors ${
-              value === opt
-                ? 'bg-primary text-white'
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-            }`}
-          >
-            {opt}
-          </button>
-        ))}
       </div>
     </div>
   );

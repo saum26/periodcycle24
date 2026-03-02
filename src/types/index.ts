@@ -8,8 +8,7 @@ export interface DailyLog {
   id: string;
   date: string;      // ISO date "YYYY-MM-DD"
   flow?: 'light' | 'medium' | 'heavy';
-  cramps?: 'none' | 'mild' | 'moderate' | 'severe';
-  mood?: 'happy' | 'neutral' | 'sad' | 'anxious' | 'irritable';
+  symptoms: string[];
   notes?: string;
 }
 
