@@ -3,6 +3,7 @@ import { Tab } from '../../types';
 interface NavBarProps {
   activeTab: Tab;
   onTabChange: (tab: Tab) => void;
+  onSignOut: () => void;
 }
 
 const tabs: { id: Tab; label: string; icon: string }[] = [
@@ -12,12 +13,18 @@ const tabs: { id: Tab; label: string; icon: string }[] = [
   { id: 'symptoms', label: 'Symptoms', icon: '📝' },
 ];
 
-export function NavBar({ activeTab, onTabChange }: NavBarProps) {
+export function NavBar({ activeTab, onTabChange, onSignOut }: NavBarProps) {
   return (
     <nav className="bg-primary text-white shadow-md">
       {/* App title */}
-      <div className="text-center pt-3 pb-1">
+      <div className="flex items-center justify-between px-4 pt-3 pb-1">
         <h1 className="text-base font-bold tracking-tight">🌸 Period Tracker</h1>
+        <button
+          onClick={onSignOut}
+          className="text-xs text-white/70 hover:text-white transition-colors"
+        >
+          Sign out
+        </button>
       </div>
       {/* Tab bar */}
       <div className="flex">

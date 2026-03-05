@@ -1,19 +1,30 @@
 import { useState } from 'react';
-import { AppProvider } from './context/AppContext';
+import { AppProvider, useAppContext } from './context/AppContext';
 import { NavBar } from './components/layout/NavBar';
 import { Layout } from './components/layout/Layout';
 import { Dashboard } from './components/Dashboard';
 import { Calendar } from './components/Calendar/Calendar';
 import { CycleLog } from './components/CycleLog/CycleLog';
 import { SymptomLog } from './components/SymptomLog/SymptomLog';
+import { AuthScreen } from './components/Auth/AuthScreen';
 import { Tab } from './types';
 
 function AppContent() {
+  const { user, loading, signOut } = useAppContext();
   const [activeTab, setActiveTab] = useState<Tab>('dashboard');
   const [quickLogDate, setQuickLogDate] = useState<string | undefined>();
 
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-app-bg flex items-center justify-center">
+        <p className="text-gray-400 text-sm">Loading...</p>
+      </div>
+    );
+  }
+
+  if (!user) return <AuthScreen />;
+
   function handleTabChange(tab: Tab) {
-    // Clear the prefilled date whenever navigating away from symptoms
     if (tab !== 'symptoms') setQuickLogDate(undefined);
     setActiveTab(tab);
   }
@@ -32,7 +43,7 @@ function AppContent() {
 
   return (
     <div className="min-h-screen bg-app-bg">
-      <NavBar activeTab={activeTab} onTabChange={handleTabChange} />
+      <NavBar activeTab={activeTab} onTabChange={handleTabChange} onSignOut={signOut} />
       <Layout>
         {activeTab === 'dashboard' && <Dashboard onQuickLog={handleQuickLog} />}
         {activeTab === 'calendar' && <Calendar onDayClick={handleCalendarDayClick} />}
