@@ -1,63 +1,53 @@
-import { useState } from 'react';
-import { AppProvider, useAppContext } from './context/AppContext';
-import { NavBar } from './components/layout/NavBar';
-import { Layout } from './components/layout/Layout';
-import { Dashboard } from './components/Dashboard';
-import { Calendar } from './components/Calendar/Calendar';
-import { CycleLog } from './components/CycleLog/CycleLog';
-import { SymptomLog } from './components/SymptomLog/SymptomLog';
-import { AuthScreen } from './components/Auth/AuthScreen';
-import { Tab } from './types';
+import { CssBaseline, ThemeProvider } from '@mui/material';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { theme } from './theme';
+import { AuthProvider, useAuth } from './context/AuthContext';
+import { HabitsProvider } from './context/HabitsContext';
+import { LoadingScreen } from './components/LoadingScreen';
+import { LoginPage } from './pages/LoginPage';
+import { SignupPage } from './pages/SignupPage';
+import { HomePage } from './pages/HomePage';
+import { HabitDetailPage } from './pages/HabitDetailPage';
+import { LeaderboardPage } from './pages/LeaderboardPage';
+import { ProfilePage } from './pages/ProfilePage';
 
-function AppContent() {
-  const { user, loading, signOut } = useAppContext();
-  const [activeTab, setActiveTab] = useState<Tab>('dashboard');
-  const [quickLogDate, setQuickLogDate] = useState<string | undefined>();
+function AppRoutes() {
+  const { user, loading } = useAuth();
 
-  if (loading) {
+  if (loading) return <LoadingScreen />;
+
+  if (!user) {
     return (
-      <div className="min-h-screen bg-app-bg flex items-center justify-center">
-        <p className="text-gray-400 text-sm">Loading...</p>
-      </div>
+      <Routes>
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<SignupPage />} />
+        <Route path="*" element={<Navigate to="/login" replace />} />
+      </Routes>
     );
   }
 
-  if (!user) return <AuthScreen />;
-
-  function handleTabChange(tab: Tab) {
-    if (tab !== 'symptoms') setQuickLogDate(undefined);
-    setActiveTab(tab);
-  }
-
-  function handleQuickLog() {
-    const today = new Date();
-    const isoDate = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
-    setQuickLogDate(isoDate);
-    setActiveTab('symptoms');
-  }
-
-  function handleCalendarDayClick(date: string) {
-    setQuickLogDate(date);
-    setActiveTab('symptoms');
-  }
-
   return (
-    <div className="min-h-screen bg-app-bg">
-      <NavBar activeTab={activeTab} onTabChange={handleTabChange} onSignOut={signOut} />
-      <Layout>
-        {activeTab === 'dashboard' && <Dashboard onQuickLog={handleQuickLog} />}
-        {activeTab === 'calendar' && <Calendar onDayClick={handleCalendarDayClick} />}
-        {activeTab === 'cycles' && <CycleLog />}
-        {activeTab === 'symptoms' && <SymptomLog initialDate={quickLogDate} />}
-      </Layout>
-    </div>
+    <HabitsProvider>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/habit/:id" element={<HabitDetailPage />} />
+        <Route path="/leaderboard" element={<LeaderboardPage />} />
+        <Route path="/profile" element={<ProfilePage />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </HabitsProvider>
   );
 }
 
 export default function App() {
   return (
-    <AppProvider>
-      <AppContent />
-    </AppProvider>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <BrowserRouter>
+        <AuthProvider>
+          <AppRoutes />
+        </AuthProvider>
+      </BrowserRouter>
+    </ThemeProvider>
   );
 }

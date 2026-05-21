@@ -1,47 +1,29 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-import tailwindcss from '@tailwindcss/vite'
-import { VitePWA } from 'vite-plugin-pwa'
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig({
   plugins: [
     react(),
-    tailwindcss(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['icon.svg'],
       manifest: {
-        name: 'Period Tracker',
-        short_name: 'Period',
-        description: 'Track your menstrual cycle, symptoms, and predictions',
-        theme_color: '#db2777',
-        background_color: '#f9fafb',
+        name: 'Habit Tracker',
+        short_name: 'Habits',
+        description: 'Track your daily habits and compete with friends',
+        theme_color: '#9C89B8',
+        background_color: '#F8F4FF',
         display: 'standalone',
         orientation: 'portrait',
         scope: '/',
         start_url: '/',
         icons: [
-          {
-            src: 'apple-touch-icon.png',
-            sizes: '180x180',
-            type: 'image/png',
-          },
-          {
-            src: 'icon-192.png',
-            sizes: '192x192',
-            type: 'image/png',
-          },
-          {
-            src: 'icon-512.png',
-            sizes: '512x512',
-            type: 'image/png',
-            purpose: 'any maskable',
-          },
+          { src: 'apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
+          { src: 'icon-192.png', sizes: '192x192', type: 'image/png' },
+          { src: 'icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'any maskable' },
         ],
       },
-      workbox: {
-        globPatterns: ['**/*.{js,css,html,svg}'],
-      },
+      workbox: { globPatterns: ['**/*.{js,css,html,svg}'] },
     }),
   ],
-})
+});
