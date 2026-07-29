@@ -1,0 +1,156 @@
+.page {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem 6rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.loading {
+  text-align: center;
+  padding: 3rem;
+  color: var(--muted);
+}
+
+.back {
+  align-self: flex-start;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  color: var(--text);
+  border-radius: 8px;
+  padding: 0.4rem 0.85rem;
+  font-size: 0.95rem;
+  cursor: pointer;
+  margin-bottom: 1.25rem;
+}
+
+.name {
+  font-size: 1.4rem;
+  font-weight: 700;
+  text-align: center;
+  color: var(--text);
+  margin-bottom: 0.5rem;
+}
+
+.mantraText {
+  font-size: 1rem;
+  color: var(--muted);
+  text-align: center;
+  line-height: 1.6;
+  margin-bottom: 1.25rem;
+  padding: 0 0.5rem;
+}
+
+.progress {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  margin-bottom: 1.5rem;
+}
+
+.ring {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.trackCircle {
+  fill: none;
+  stroke: var(--border);
+  stroke-width: 10;
+}
+
+.progressCircle {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 10;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.3s ease;
+}
+
+.countDisplay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.15rem;
+}
+
+.current {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.separator {
+  font-size: 1.2rem;
+  color: var(--muted);
+  align-self: flex-end;
+  padding-bottom: 0.3rem;
+}
+
+.target {
+  font-size: 1.2rem;
+  color: var(--muted);
+  align-self: flex-end;
+  padding-bottom: 0.3rem;
+}
+
+.badge {
+  background: var(--accent);
+  color: #fff;
+  border-radius: 999px;
+  padding: 0.4rem 1.2rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
+}
+
+/* Large tap area — easy to hit on mobile */
+.tapBtn {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  border: none;
+  background: #f59e0b;
+  color: #fff;
+  font-size: 2rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 0 28px rgba(245, 158, 11, 0.45);
+  transition: transform 0.08s ease, box-shadow 0.08s ease;
+  touch-action: manipulation;
+  margin-bottom: 1.75rem;
+}
+
+.tapBtn:active {
+  transform: scale(0.93);
+  box-shadow: 0 0 14px rgba(245, 158, 11, 0.3);
+}
+
+.actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.secondaryBtn {
+  padding: 0.6rem 1.25rem;
+  border-radius: 8px;
+  border: 1.5px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.resetBtn {
+  padding: 0.6rem 1.25rem;
+  border-radius: 8px;
+  border: 1.5px solid #e55;
+  background: transparent;
+  color: #e55;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
