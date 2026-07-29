@@ -1,0 +1,21 @@
+:root {
+  --accent: #7c4dff;
+  --surface: #1e1e2e;
+  --bg: #12121c;
+  --border: #2e2e4e;
+  --text: #e8e8f0;
+  --muted: #7878a0;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body, #root {
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  -webkit-tap-highlight-color: transparent;
+  font-size: 16px;
+}
+
+button { font-family: inherit; }
